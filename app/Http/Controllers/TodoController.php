@@ -27,12 +27,21 @@ class TodoController extends Controller
 	public function create(){
 		return view('todo.create');
 	}
-	public function store(Request $request)
-	{
-    		$input =  $request->all();
+	public function edit($id){
+                $todo = $this->todo->find($id);
+                return view('todo.edit')->with(compact('todo'));
+        }
+	public function store(Request $request){
+    		$input = $request->all();
     		$this->todo->fill($input);
     		$this->todo->save();
 
     		return redirect()->to('todo');
+	}
+	public function update(Request $request, $id){
+		$input = $request->all();
+		$this->todo->where('id', $id)->update(['title' => $input['title']]);
+
+		return redirect()->to('todo');
 	}
 }
